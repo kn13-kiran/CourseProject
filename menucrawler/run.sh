@@ -1,0 +1,1 @@
+scrapy crawl restaurant_menu_crawler

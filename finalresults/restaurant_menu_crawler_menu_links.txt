@@ -1,0 +1,4 @@
+https://papillonrestaurant.com/non-alcoholic-beverages,1.0
+https://papillonrestaurant.com/takeout-orders,1.0
+https://papillonrestaurant.com/papillon-store/take-out-entrees,1.0
+https://papillonrestaurant.com/papillon-store/take-out-soups-and-salads,1.0
