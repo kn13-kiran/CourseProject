@@ -29,7 +29,6 @@ class MenuSpider(CrawlSpider):
     #start_urls=['https://menupages.com/pulled-chopped-bbq-sandwiches-bowls/119-e-23rd-st-new-york']
 
     def __init__(self, input_urls=None, allowed_domains=None, *args, **kwargs):
-        print("Spider Initialized...")
         super(MenuSpider, self).__init__(*args, **kwargs)
         self.start_urls = str(input_urls).split(',')
 
@@ -43,14 +42,14 @@ class MenuSpider(CrawlSpider):
         1. Crawl the webpage and extract the contents.
         2. Parase and Fetch the contents
         3. Classify whether the Contents are relevant to Menu
-        4.
-        :param response: - response of fetch
-        :return: items
+            3a. If the page is not relevant based on the classifier stop crawling
+            3b. If the page is relevant, continue crawling links
+        4. Pipelines will automatically save the relevant urls and score.
         """
-        print("Got Parse Item...")
-        MenuSpider.processed_urls.append(response.url)
-        page_data = PageData()
         pageURL = response.url
+        MenuSpider.processed_urls.append(pageURL)
+        self.log("Downloaded Page %s" % pageURL,logging.INFO)
+        page_data = PageData()
         page_data['url'] = pageURL
         page_data['link_text'] = response.meta.get('link_text', '') if response.meta else ''
         soup = BeautifulSoup(response.body, 'html.parser')
@@ -61,25 +60,20 @@ class MenuSpider(CrawlSpider):
         page_data['page_title'] = page_title
         links = self.retrieve_links(response, soup)
 
-        #print(response.url)
-        #print("ptitle",page_title)
-        #print("pbody",page_body)
-        #print(self.classifier)
-        # get score of the page based upon classifier
+        # Use the classifer & get score to determine whether we should crawl further (refer to 3a.)
         if self.classifier:
             score = self.classifier.score(page_data['link_text'], page_title, page_body)
         else:
             score = 0.0
         page_data['score']=score
+        self.log("Score for URl %s is %8.2f" % (pageURL,score),logging.INFO)
         yield page_data
         if score <= 0:
-            self.log(pageURL+"This page is not related to menus",logging.INFO)
+            self.log("This URL %s doesn't contian Menu related information" % pageURL,logging.INFO)
         else:
             for link in links:
                 req = Request(link, priority=int(score * 100), callback=self.parse_item)
                 yield req
-                #yield self.parse_location(response)
-        print("_____________________________________________________________________________________")
 
     def retrieve_title(self, soup):
         #retrieve the title from head tag.
@@ -93,17 +87,16 @@ class MenuSpider(CrawlSpider):
         #retrieve body from the HTML document.
         body = soup.find("body")
         body_text = ''
-        #if not body:
-            #return body_text
+        # If body not found return blank string.
+        if not body:
+            return body_text
 
         for pTag in body.find_all('p'):
-            #body_text += pTag.get_text() + "\n"
             body_text += pTag.get_text().rstrip()
-        #print("??? Body...",body_text)
         return body_text
 
     def retrieve_links(self, response, soup):
-        #retrieve links
+        #retrieve all the links in the page for further crawling
         links = []
         for anchor in soup.find_all('a'):
             href = anchor.get('href')

@@ -9,8 +9,8 @@ class MenuClassifier(object):
 		self.fwdIndex = metapy.index.make_forward_index(configFile)
 
 		# Define multi class data set
-		print(configFile,self.fwdIndex,self.invertedIndex)
-		print("labels",self.fwdIndex.num_labels())
+		#print(configFile,self.fwdIndex,self.invertedIndex)
+		#print("labels",self.fwdIndex.num_labels())
 		self.multiClassDataset = metapy.classify.MulticlassDataset(self.fwdIndex)
 		self.classifier = self.getClassifier(self.multiClassDataset, self.fwdIndex, self.invertedIndex)
 
@@ -18,19 +18,11 @@ class MenuClassifier(object):
 		return metapy.classify.NaiveBayes(training=training, alpha=0.01, beta=0.01)
 
 	def score(self, link_text, page_title, body_text):
-		print("???? Scoring....",link_text, page_title, body_text)
-		#return 1.0
-		#print("#page_title",page_title)
-		#print("#link_text",link_text)
-		#print("#body_text",body_text)
 		doc = metapy.index.Document()
 		doc.content(link_text + page_title + body_text)
 		docvec = self.fwdIndex.tokenize(doc)
 		label = self.classifier.classify(docvec)
-		print("??? Label is ...",label)
 		if label == "MenuPage":
 			return 1.0
-		elif label == "Other":
-			return 0.0
 		else:
-			return 0.5
+			return 0.

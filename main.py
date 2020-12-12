@@ -7,26 +7,30 @@ from menu_classifier import MenuClassifier
 
 def main(args):
     if len(args) < 2:
-        print("Usage")
-    urls = args[1]
-    classifier = MenuClassifier(os.path.abspath("config.toml"))
-    startCrawl(input_urls=urls, classifier=classifier)
+        print("Missing the list of URLs that need to be checked")
+        print("Usage - python main.py url1,url2,..urln ")
+        print("Example - python main.py https://www.cnn.com,https://papillonrestaurant.com")
+    else:
+        urls = args[1]
+        classifier = MenuClassifier(os.path.abspath("config.toml"))
+        startCrawl(input_urls=urls, classifier=classifier)
 
-def truncate_file(filepath):
-	with open(filepath, "r+") as fp:
-		fp.truncate()
-
-def startCrawl(input_urls, classifier=None):
+def startCrawl(input_urls, classifier):
     os.environ.setdefault('SCRAPY_SETTINGS_MODULE', 'menucrawler.settings')
-    print("starting...")
+    print("Crawling URLs %s " %input_urls )
+    print("Press Ctrl+C to terminate crawling")
     truncate_file("finalresults/restaurant_menu_crawler_all_links.txt")
     truncate_file("finalresults/restaurant_menu_crawler_menu_links.txt")
-    #truncate_file("finalresults/log/crawler.log")
+    truncate_file("menucrawler/log/menucrawler.log")
 
     process = CrawlerProcess(get_project_settings())
     process.crawl('restaurant_menu_crawler', input_urls, classifier=classifier)
     process.start()
-    print("done...")
+    print("Processing done...")
+
+def truncate_file(filepath):
+	with open(filepath, "r+") as fp:
+		fp.truncate()
 
 if __name__ == '__main__':
 	main(sys.argv)
