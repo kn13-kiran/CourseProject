@@ -1,7 +1,7 @@
-./_pycachce_
+./__pycache__
 ./.git
 ./idx
 ./dataset/.DS_Store
-./.DS_Store
+.DS_Store
 ./menucrawler/._pycache_
-./menucrawler/.log
+./menucrawler/log
