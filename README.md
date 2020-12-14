@@ -44,21 +44,20 @@
   pip install beautifulsoup4
 
 
-Running the project
+## Running the project
     There is main.py file which needs to be invoked by passing target_urls (comma separated urls).
     python main.py url1,url2,...,urln
-For example -
-  python main.py https://papillonrestaurant.com,http://www.cnn.com
+  * For example -
+  * python main.py https://papillonrestaurant.com,http://www.cnn.com
 
-This command will generate output to finalresults folder.
-  restaurant_menu_crawler_all_links.txt - holds all the urls that were crawled.
-  restaurant_menu_crawler_menu_links.txt - holds the urls that contain menu informaiton.
+  * This command will generate output to finalresults folder.
+  * restaurant_menu_crawler_all_links.txt - holds all the urls that were crawled.
+  * restaurant_menu_crawler_menu_links.txt - holds the urls that contain menu informaiton.
+  * menucrawler/log -> contains log file.
 
-menucrawler/log -> contains log file.
-
-How to stop crawling
+## Termination
   This project will keep crawling until resources is exhausted or no more relevant url to crawl.If you want to stop crawling immediately then press [ctrl^c] which unsafely stop crawler immediately.
 
-Future work
-  Improving Sample Data -  I could add additional data to include different types of cuisines.
-  Improving Classification - Current classification is binary , it can be further improved to include type of cuisine.
+## Future work
+  * Improving Sample Data -  I could add additional data to include different types of cuisines.
+  * Improving Classification - Current classification is binary , it can be further improved to include type of cuisine.
