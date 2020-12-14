@@ -25,10 +25,6 @@ class PageDataOutput(object):
 	def process_item(self, item, spider):
 		url =item.get('url')
 		score= item.get('score')
-		link_text = item.get('link_text')
-		page_title = item.get('page_title')
-		page_body = item.get('page_body')
-		page_meta_data = link_text+page_title
 		line = url+","+str(score)+"\n"
 		with open('finalresults/%s_all_links.txt' % spider.name, 'a+') as fp:
 			fp.writelines([line])
@@ -37,6 +33,10 @@ class PageDataOutput(object):
 				fp.writelines([line])
 
 		#dumping sample seed data
+		#link_text = item.get('link_text')
+		#page_title = item.get('page_title')
+		#page_body = item.get('page_body')
+		#page_meta_data = link_text+page_title
 		#category = "MenuPage "
 		#category="Other "
 		#page_meta_data = category+page_meta_data

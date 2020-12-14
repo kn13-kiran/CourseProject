@@ -14,12 +14,10 @@ import sys
 
 
 class MenuSpider(CrawlSpider):
-    globalIdx = 2
     rules = (
         Rule(LinkExtractor(unique=True), callback='parse_item', follow=False),
     )
     name ="restaurant_menu_crawler"
-    processed_urls = []
 
     #start_urls=['https://menupages.com']
     #start_urls=['https://menupages.com/fish-poke-bar/56-reade-st-new-york']
@@ -37,7 +35,6 @@ class MenuSpider(CrawlSpider):
         self.classifier = kwargs.get('classifier')
 
     def parse_item(self, response):
-        global globalIdx
         """
         1. Crawl the webpage and extract the contents.
         2. Parase and Fetch the contents
@@ -47,7 +44,6 @@ class MenuSpider(CrawlSpider):
         4. Pipelines will automatically save the relevant urls and score.
         """
         pageURL = response.url
-        MenuSpider.processed_urls.append(pageURL)
         self.log("Downloaded Page %s" % pageURL,logging.INFO)
         page_data = PageData()
         page_data['url'] = pageURL
@@ -75,13 +71,18 @@ class MenuSpider(CrawlSpider):
                 req = Request(link, priority=int(score * 100), callback=self.parse_item)
                 yield req
 
-    def retrieve_title(self, soup):
-        #retrieve the title from head tag.
-        head = soup.find("head")
-        if head and head.find("title"):
-            return head.find("title").get_text()
-        else:
-            return ''
+    def retrieve_links(self, response, soup):
+        #retrieve all the links in the page for further craw
+        links = []
+        for anchor in soup.find_all('a'):
+            href = anchor.get('href')
+            # Convert relative href to full uri
+            if href and href.startswith("/"):
+                href = response.urljoin(href)
+            else:
+                continue
+            links.append(href)
+        return links
 
     def retrieve_body(self, soup):
         #retrieve body from the HTML document.
@@ -95,15 +96,10 @@ class MenuSpider(CrawlSpider):
             body_text += pTag.get_text().rstrip()
         return body_text
 
-    def retrieve_links(self, response, soup):
-        #retrieve all the links in the page for further crawling
-        links = []
-        for anchor in soup.find_all('a'):
-            href = anchor.get('href')
-            # Convert relative href to full uri
-            if href and href.startswith("/"):
-                href = response.urljoin(href)
-            else:
-                continue
-            links.append(href)
-        return links
+    def retrieve_title(self, soup):
+        #retrieve the title from head tag.
+        head = soup.find("head")
+        if head and head.find("title"):
+            return head.find("title").get_text()
+        else:
+            return ''
