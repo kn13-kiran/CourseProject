@@ -61,3 +61,4 @@
 ## Future work
   * Improving Sample Data -  I could add additional data to include different types of cuisines.
   * Improving Classification - Current classification is binary , it can be further improved to include type of cuisine.
+  * Tracking Zipcodes - The next part of this pipeline requires us to store the zipcode information associated with the restaurant. Currently, zipcode information is not saved, but, it can also be added to the output.
