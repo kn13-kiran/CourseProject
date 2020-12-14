@@ -15,7 +15,7 @@ import sys
 
 class MenuSpider(CrawlSpider):
     rules = (
-        Rule(LinkExtractor(unique=True), callback='parse_item', follow=False),
+        Rule(LinkExtractor(unique=True), callback='process_page', follow=False),
     )
     name ="restaurant_menu_crawler"
 
@@ -34,7 +34,7 @@ class MenuSpider(CrawlSpider):
             self.allowed_domains = str(allowed_domains).split(',')
         self.classifier = kwargs.get('classifier')
 
-    def parse_item(self, response):
+    def process_page(self, response):
         """
         1. Crawl the webpage and extract the contents.
         2. Parase and Fetch the contents
@@ -68,7 +68,7 @@ class MenuSpider(CrawlSpider):
             self.log("This URL %s doesn't contian Menu related information" % pageURL,logging.INFO)
         else:
             for link in links:
-                req = Request(link, priority=int(score * 100), callback=self.parse_item)
+                req = Request(link, priority=int(score * 100), callback=self.process_page)
                 yield req
 
     def retrieve_links(self, response, soup):
