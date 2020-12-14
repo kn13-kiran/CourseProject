@@ -6,11 +6,11 @@
 
   There are two major components of this project:
 
-  ### Menu classifier - which uses anchor text, page title head>title, and body>p data to classify relevance of the page. This uses NaiveBayes classification and provides score either 0 or 1.
+  ## Menu classifier - which uses anchor text, page title head>title, and body>p data to classify relevance of the page. This uses NaiveBayes classification and provides score either 0 or 1.
 
-  ### Menu Spider - Web crawler that downloads, parses and extract the data from the links.
+  ## Menu Spider - Web crawler that downloads, parses and extract the data from the links.
 
-  ### Training data set for classifier -  I've manually created, curated and labelled menu data from menupages.com
+  ## Training data set for classifier -  I've manually created, curated and labelled menu data from menupages.com
     dataset/sample/*menu*.txt - contains menu data from different types of restaurants in different cities.
     dataset/sample/*other*.txt - contains non menu relevant data.
 
