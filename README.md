@@ -28,8 +28,6 @@
 
 ## Project Dependencies
   This projects uses some third party components, you have to install these components first to run this project
-
-## Dependencies
    conda - to create python 3.5 virtual environment
    python 3.5+
    scrapy 2.3.0
