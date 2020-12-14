@@ -1,6 +1,8 @@
 # Restaurant Menu Crawler & Classifier
    A restaurant review company would like to provide recommendation on menu items across the world. To accomplish this goal, the first stage
-   of the pipeline is to identify the URLs that relevant (i.e. find the URLs that contain menu information). This project focuses on the first stage
+   of the pipeline is to identify the URLs that relevant (i.e. find the URLs that contain menu information). This project focuses on the first stage.
+   The summary of the video can be found here[here](https://mediaspace.illinois.edu/media/t/1_xvyuazua)
+
 
 ## Components
 
